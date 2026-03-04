@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dad HQ — Katy, TX Family Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #131929;
+    --surface2: #1a2235;
+    --surface3: #1f2a40;
+    --accent: #f97316;
+    --accent2: #38bdf8;
+    --green: #22c55e;
+    --yellow: #facc15;
+    --purple: #a78bfa;
+    --red: #f43f5e;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e293b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Nunito',sans-serif; min-height:100vh; }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #131929 0%, #0b0f1a 60%);
+    border-bottom: 3px solid var(--accent);
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 30px rgba(249,115,22,0.15);
+  }
+  .logo { font-family:'Bebas Neue'; font-size:2rem; letter-spacing:3px; color:var(--accent); }
+  .logo span { color:var(--text); }
+  .header-right { text-align:right; }
+  .header-right .city { font-size:0.85rem; font-weight:800; color:var(--accent2); }
+  .header-right .date { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+  .header-kids { display:flex; gap:8px; margin-top:6px; justify-content:flex-end; }
+  .kid-tag { background:rgba(249,115,22,0.15); border:1px solid rgba(249,115,22,0.3); border-radius:20px; padding:2px 10px; font-size:0.68rem; font-weight:700; color:var(--accent); }
+
+  /* TABS */
+  .tabs {
+    display:flex; gap:0; background:var(--surface);
+    border-bottom:1px solid var(--border); overflow-x:auto;
+    padding: 0 20px;
+  }
+  .tab {
+    padding:14px 18px; border:none; background:transparent;
+    color:var(--muted); font-family:'Nunito'; font-size:0.82rem; font-weight:700;
+    cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap;
+    transition:all 0.2s; letter-spacing:0.3px;
+  }
+  .tab:hover { color:var(--text); }
+  .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+  /* PANELS */
+  main { padding:24px 24px 48px; max-width:1100px; margin:0 auto; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+
+  /* SECTION HEADER */
+  .sec-head {
+    font-family:'Bebas Neue'; font-size:1.4rem; letter-spacing:2px;
+    margin-bottom:18px; display:flex; align-items:center; gap:12px; color:var(--text);
+  }
+  .sec-head .line { flex:1; height:1px; background:var(--border); }
+
+  /* GRID */
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  @media(max-width:720px) { .g2,.g3 { grid-template-columns:1fr; } main { padding:14px; } }
+
+  /* CARD */
+  .card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:18px;
+  }
+  .card-title {
+    font-size:0.7rem; font-weight:800; text-transform:uppercase;
+    letter-spacing:1.5px; color:var(--muted); margin-bottom:14px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .card-title .pip { width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0; }
+
+  /* STAT BOXES */
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  @media(max-width:600px) { .stats { grid-template-columns:repeat(2,1fr); } }
+  .stat {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:16px; text-align:center;
+  }
+  .stat .n { font-family:'Bebas Neue'; font-size:2.4rem; line-height:1; }
+  .stat .l { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); margin-top:4px; }
+  .orange .n { color:var(--accent); }
+  .blue .n { color:var(--accent2); }
+  .green .n { color:var(--green); }
+  .yellow .n { color:var(--yellow); }
+
+  /* EVENT ITEM */
+  .ev { display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+  .ev:last-child { border:none; padding-bottom:0; }
+  .ev-date { background:var(--surface2); border-radius:8px; padding:6px 9px; text-align:center; min-width:48px; flex-shrink:0; }
+  .ev-date .mo { font-size:0.58rem; font-weight:800; text-transform:uppercase; color:var(--accent); letter-spacing:1px; }
+  .ev-date .dy { font-family:'Bebas Neue'; font-size:1.5rem; line-height:1.1; }
+  .ev-info h4 { font-size:0.86rem; font-weight:800; margin-bottom:2px; line-height:1.3; }
+  .ev-info p { font-size:0.74rem; color:var(--muted); line-height:1.4; }
+  .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:20px; font-size:0.62rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; }
+  .t-free { background:rgba(34,197,94,0.12); color:var(--green); }
+  .t-sports { background:rgba(249,115,22,0.12); color:var(--accent); }
+  .t-science { background:rgba(56,189,248,0.12); color:var(--accent2); }
+  .t-active { background:rgba(250,204,21,0.12); color:var(--yellow); }
+  .t-katy { background:rgba(167,139,250,0.12); color:var(--purple); }
+  .t-cheap { background:rgba(244,63,94,0.12); color:var(--red); }
+
+  /* HIGHLIGHT BANNER */
+  .banner {
+    background:linear-gradient(135deg,rgba(249,115,22,0.18),rgba(249,115,22,0.06));
+    border:1px solid rgba(249,115,22,0.35); border-radius:13px;
+    padding:16px 20px; margin-bottom:18px;
+  }
+  .banner h3 { font-size:1rem; font-weight:800; margin-bottom:4px; }
+  .banner p { font-size:0.79rem; color:var(--muted); line-height:1.5; }
+
+  /* GAME CARD */
+  .game {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:10px; padding:13px 15px; margin-bottom:9px;
+    display:flex; justify-content:space-between; align-items:center;
+    transition:border-color 0.2s;
+  }
+  .game:hover { border-color:var(--accent); }
+  .game-teams { flex:1; }
+  .game-teams h4 { font-size:0.85rem; font-weight:800; }
+  .game-teams p { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+  .game-tags { display:flex; flex-direction:column; gap:4px; align-items:flex-end; }
+  .home-pill { background:rgba(249,115,22,0.2); color:var(--accent); border-radius:5px; padding:2px 7px; font-size:0.6rem; font-weight:800; text-transform:uppercase; }
+  .away-pill { background:rgba(100,116,139,0.2); color:var(--muted); border-radius:5px; padding:2px 7px; font-size:0.6rem; font-weight:800; text-transform:uppercase; }
+
+  /* CHECKLIST */
+  .chk { display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--border); cursor:pointer; }
+  .chk:last-child { border:none; }
+  .chk-box {
+    width:22px; height:22px; border:2px solid var(--border); border-radius:6px;
+    flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-top:1px;
+    transition:all 0.2s;
+  }
+  .chk.done .chk-box { background:var(--green); border-color:var(--green); }
+  .chk.done .chk-label { text-decoration:line-through; color:var(--muted); }
+  .chk-label { font-size:0.87rem; font-weight:700; }
+  .chk-sub { font-size:0.72rem; color:var(--muted); margin-top:2px; line-height:1.4; }
+
+  /* PROGRESS */
+  .prog-wrap { margin:6px 0 18px; }
+  .prog-label { display:flex; justify-content:space-between; font-size:0.72rem; color:var(--muted); margin-bottom:5px; font-weight:700; }
+  .prog-bar { height:7px; background:var(--surface2); border-radius:4px; overflow:hidden; }
+  .prog-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--yellow)); border-radius:4px; transition:width 0.5s ease; }
+
+  /* TIP */
+  .tip {
+    background:var(--surface2); border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0; padding:12px 15px; margin-bottom:12px;
+  }
+  .tip h4 { font-size:0.8rem; font-weight:800; color:var(--accent); margin-bottom:4px; }
+  .tip p { font-size:0.76rem; color:var(--muted); line-height:1.5; }
+
+  /* PLACE CARD */
+  .place {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:11px; padding:15px; margin-bottom:10px;
+    transition:border-color 0.2s;
+  }
+  .place:hover { border-color:var(--accent2); }
+  .place h4 { font-size:0.9rem; font-weight:800; margin-bottom:3px; }
+  .place .addr { font-size:0.72rem; color:var(--muted); margin-bottom:6px; }
+  .place .desc { font-size:0.76rem; color:var(--text); line-height:1.5; }
+
+  /* CAL NOTE */
+  .cal-box {
+    background:linear-gradient(135deg,rgba(56,189,248,0.08),rgba(56,189,248,0.02));
+    border:1px dashed rgba(56,189,248,0.3); border-radius:12px;
+    padding:18px; margin-top:20px;
+  }
+  .cal-box h3 { font-size:0.9rem; font-weight:800; color:var(--accent2); margin-bottom:8px; }
+  .cal-box p { font-size:0.79rem; color:var(--muted); line-height:1.6; }
+  .cal-box code { background:var(--surface2); padding:2px 7px; border-radius:4px; font-size:0.75rem; color:var(--accent2); }
+
+  /* MONTH CALENDAR */
+  .month-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:20px; }
+  .day-head { text-align:center; font-size:0.65rem; font-weight:800; color:var(--muted); text-transform:uppercase; padding:6px 0; }
+  .day-cell {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:7px; padding:6px; min-height:64px; cursor:pointer;
+    transition:border-color 0.2s; position:relative;
+  }
+  .day-cell:hover { border-color:var(--muted); }
+  .day-cell.has-event { border-color:rgba(249,115,22,0.4); }
+  .day-cell.today { border-color:var(--accent); background:rgba(249,115,22,0.07); }
+  .day-cell .day-num { font-size:0.72rem; font-weight:800; margin-bottom:3px; color:var(--muted); }
+  .day-cell.today .day-num { color:var(--accent); }
+  .day-cell.empty { background:transparent; border-color:transparent; }
+  .dot-event { width:6px; height:6px; border-radius:50%; margin:2px 0; }
+  .de-free { background:var(--green); }
+  .de-sports { background:var(--accent); }
+  .de-science { background:var(--accent2); }
+  .de-katy { background:var(--purple); }
+  .cal-legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; }
+  .leg { display:flex; align-items:center; gap:5px; font-size:0.7rem; color:var(--muted); font-weight:700; }
+  .leg-dot { width:8px; height:8px; border-radius:50%; }
+
+  /* WEEKLY REPORT BOX */
+  .report-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:20px; margin-bottom:16px;
+  }
+  .report-card h3 { font-family:'Bebas Neue'; font-size:1.2rem; letter-spacing:1.5px; margin-bottom:14px; color:var(--accent); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width:5px; height:5px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+  .checkmark-svg { display:none; }
+  .chk.done .checkmark-svg { display:block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">DAD<span> HQ</span></div>
+  <div class="header-right">
+    <div class="city">📍 Katy, TX — Fort Bend County</div>
+    <div class="date">Weekly Brief · March 4, 2026</div>
+    <div class="header-kids">
+      <span class="kid-tag">👦 Age 6</span>
+      <span class="kid-tag">👦 Age 10</span>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('week')">📅 This Week</button>
+  <button class="tab" onclick="switchTab('month')">📆 March at a Glance</button>
+  <button class="tab" onclick="switchTab('sports')">🏆 Sports Schedule</button>
+  <button class="tab" onclick="switchTab('places')">📍 Katy Go-To Spots</button>
+  <button class="tab" onclick="switchTab('checklist')">✅ Weekly Checklist</button>
+  <button class="tab" onclick="switchTab('cal')">📲 Google Calendar</button>
+  <button class="tab" onclick="switchTab('receive')">📬 Get Updates</button>
+</div>
+
+<main>
+
+<!-- ══════════════ THIS WEEK ══════════════ -->
+<div class="panel active" id="panel-week">
+
+  <div class="stats">
+    <div class="stat green"><div class="n">6</div><div class="l">Free Events</div></div>
+    <div class="stat orange"><div class="n">4</div><div class="l">Sports Games</div></div>
+    <div class="stat blue"><div class="n">2</div><div class="l">Science Spots</div></div>
+    <div class="stat yellow"><div class="n">$0</div><div class="l">Min Spend</div></div>
+  </div>
+
+  <div class="banner">
+    <h3>⭐ Dad Pick of the Week: FREE Overnight Campout at VFW Park</h3>
+    <p>March 13–14 · VFW Park, George Bush Dr, Katy · Pitch a tent, outdoor movie, dinner, s'mores & breakfast — all FREE. Pre-register at <strong>CityofKaty.com/campout</strong>. The 10-year-old will LOVE this. Register now — spots fill up!</p>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><div class="pip"></div>KATY AREA — THIS WEEK</div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">4</div></div>
+        <div class="ev-info">
+          <h4>LaCenterra Farmers Market</h4>
+          <p>LaCenterra at Cinco Ranch · 11 AM · Every Sunday · Free to walk & explore, great food trucks</p>
+          <div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">5</div></div>
+        <div class="ev-info">
+          <h4>Katy Branch Library — Story & Science Programs</h4>
+          <p>Harris County Public Library, Katy Branch · Free recurring kids programs all week</p>
+          <div class="tags"><span class="tag t-free">Free</span><span class="tag t-science">Learning</span><span class="tag t-katy">Katy</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">5</div></div>
+        <div class="ev-info">
+          <h4>Maud Marks Library — Kids Programs</h4>
+          <p>1815 Westgreen Blvd, Katy · Family Place Learning Center, crafts, and more · Free</p>
+          <div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">6</div></div>
+        <div class="ev-info">
+          <h4>🏀 Rockets vs. Golden State Warriors</h4>
+          <p>Toyota Center, Houston · 7:30 PM · Big home game — worth the drive!</p>
+          <div class="tags"><span class="tag t-sports">Sports</span><span class="tag t-active">Active Crowd</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">7</div></div>
+        <div class="ev-info">
+          <h4>🏀 Rockets vs. Portland Trail Blazers</h4>
+          <p>Toyota Center, Houston · 8:00 PM</p>
+          <div class="tags"><span class="tag t-sports">Sports</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">7</div></div>
+        <div class="ev-info">
+          <h4>Lunar New Year Festival — George Memorial Library</h4>
+          <p>Fort Bend County Library, Richmond · Lion dances, food, tai chi, hands-on culture activities · FREE</p>
+          <div class="tags"><span class="tag t-free">Free</span><span class="tag t-science">Interactive</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">8</div></div>
+        <div class="ev-info">
+          <h4>Mary Jo Peckham Park — Fishing & Free Mini Golf</h4>
+          <p>Katy · Stocked pond, walking trails, free putt-putt · Great active dad day</p>
+          <div class="tags"><span class="tag t-free">Free</span><span class="tag t-active">Active</span><span class="tag t-katy">Katy</span></div>
+        </div>
+      </div>
+
+      <div class="ev">
+        <div class="ev-date"><div class="mo">MAR</div><div class="dy">9</div></div>
+        <div class="ev-info">
+          <h4>Katy Market Day — Downtown Historic Katy</h4>
+          <p>3rd Saturday each month · 65+ vendors, food trucks, live music · Free to attend</p>
+          <div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="pip"></div>DAD INTEL — TIPS THIS WEEK</div>
+
+      <div class="tip">
+        <h4>🏕️ REGISTER NOW: Free Campout March 13–14</h4>
+        <p>VFW Park on George Bush Dr · Outdoor movie, dinner, breakfast, s'mores, games · All FREE. Pre-registration required at CityofKaty.com/campout. This will be a memory-maker for both boys.</p>
+      </div>
+
+      <div class="tip">
+        <h4>⚾ Space Cowboys Open March 27 — Buy Tickets Early</h4>
+        <p>Opening Weekend: March 27–29 vs. Round Rock Express at Constellation Field, Sugar Land — 20 min from Katy. Cheap tickets, great atmosphere for kids. Friday nights = Fireworks every week!</p>
+      </div>
+
+      <div class="tip">
+        <h4>📚 Library Hack: Both Katy Libraries Are FREE</h4>
+        <p>Katy Branch (Harris County) at 5414 Franz Rd & Maud Marks at 1815 Westgreen Blvd both have weekly kids programs, STEAM activities, and take-home kits. Check hcpl.net for the current schedule each week.</p>
+      </div>
+
+      <div class="tip">
+        <h4>⚽ Dynamo Home March 14 — Good Family Game</h4>
+        <p>Houston Dynamo vs. Portland Timbers · Shell Energy Stadium, Houston · March 14 at 7:30 PM. Kids love the energy, loud supporter sections, and the outdoor atmosphere. ~35 min from Katy.</p>
+      </div>
+
+      <div class="tip">
+        <h4>🎯 Power Combo This Weekend</h4>
+        <p>Saturday: Katy Market Day downtown (free) → Sunday: LaCenterra Farmers Market (free) → Save money for a Space Cowboys ticket at end of month. Zero-cost weekend!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MARCH AT A GLANCE ══════════════ -->
+<div class="panel" id="panel-month">
+  <div class="sec-head">March 2026 <div class="line"></div></div>
+
+  <div class="month-grid" id="cal-grid">
+    <!-- Day headers -->
+    <div class="day-head">Sun</div>
+    <div class="day-head">Mon</div>
+    <div class="day-head">Tue</div>
+    <div class="day-head">Wed</div>
+    <div class="day-head">Thu</div>
+    <div class="day-head">Fri</div>
+    <div class="day-head">Sat</div>
+  </div>
+
+  <div class="cal-legend">
+    <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Free Event</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--accent)"></div>Sports Game</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--accent2)"></div>Science/Interactive</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>Katy Local</div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <div class="sec-head" style="font-size:1.1rem;">All March Events <div class="line"></div></div>
+
+    <div class="g2">
+      <div>
+        <div class="ev" style="border-bottom:1px solid var(--border);padding:10px 0">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">1</div></div>
+          <div class="ev-info"><h4>LaCenterra Farmers Market</h4><p>Katy · 11 AM · Every Sunday · Free</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">6</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. Warriors</h4><p>Toyota Center · 7:30 PM</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">7</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. Blazers</h4><p>Toyota Center · 8:00 PM</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">7</div></div>
+          <div class="ev-info"><h4>Lunar New Year Festival</h4><p>George Memorial Library, Richmond · FREE · Lion dances, cultural activities</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-science">Interactive</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">9</div></div>
+          <div class="ev-info"><h4>⚽ Dynamo vs. Portland Timbers</h4><p>Shell Energy Stadium, Houston · 7:30 PM</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">9</div></div>
+          <div class="ev-info"><h4>Katy Market Day</h4><p>Historic Downtown Katy · 3rd Saturday · Vendors, food trucks, live music · FREE</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">11</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. Toronto Raptors</h4><p>Toyota Center · Home game</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">13–14</div></div>
+          <div class="ev-info"><h4>⭐ FREE Spring Campout — VFW Park</h4><p>George Bush Dr, Katy · Overnight, outdoor movie, dinner, breakfast, s'mores · Register: CityofKaty.com/campout</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span><span class="tag t-active">Active</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">14</div></div>
+          <div class="ev-info"><h4>⚽ Dynamo vs. Portland Timbers</h4><p>Shell Energy Stadium · 7:30 PM</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">17</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. LA Lakers</h4><p>Toyota Center · 8:30 PM · Star-power matchup!</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="ev" style="border-bottom:1px solid var(--border);padding:10px 0">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">19</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. LA Lakers</h4><p>Toyota Center · 8:30 PM · Back-to-back Lakers!</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">20</div></div>
+          <div class="ev-info"><h4>🎬 Center Field Cinema — "Zootopia 2"</h4><p>Constellation Field, Sugar Land · FREE movie on the big baseball scoreboard. FREE Admission & Parking!</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-science">Interactive</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">21</div></div>
+          <div class="ev-info"><h4>⚽ Houston Dash Home Opener</h4><p>Shell Energy Stadium · 3:00 PM vs. Boston · Great intro to soccer for kids!</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">21</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. Atlanta Hawks</h4><p>Toyota Center · Home game</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">22</div></div>
+          <div class="ev-info"><h4>🏀 Rockets vs. Miami Heat</h4><p>Toyota Center · Home game</p><div class="tags"><span class="tag t-sports">Sports</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">22</div></div>
+          <div class="ev-info"><h4>LaCenterra Farmers Market</h4><p>Cinco Ranch Katy · 11 AM · Free to explore</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">27–29</div></div>
+          <div class="ev-info"><h4>⭐ ⚾ Space Cowboys OPENING WEEKEND!</h4><p>Constellation Field, Sugar Land · vs. Round Rock Express · Fri–Sun · 20 min from Katy! Fri = FIREWORKS</p><div class="tags"><span class="tag t-sports">Sports</span><span class="tag t-active">Active</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">29</div></div>
+          <div class="ev-info"><h4>LaCenterra Farmers Market</h4><p>Cinco Ranch Katy · 11 AM · Free</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">Every Sat</div></div>
+          <div class="ev-info"><h4>Library Programs (Katy & Maud Marks)</h4><p>hcpl.net · Weekly STEAM, story time, crafts for ages 6–12 · Always Free</p><div class="tags"><span class="tag t-free">Free</span><span class="tag t-science">Science</span><span class="tag t-katy">Katy</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SPORTS ══════════════ -->
+<div class="panel" id="panel-sports">
+  <div class="sec-head">Sports in Town — Spring 2026 <div class="line"></div></div>
+
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><div class="pip"></div>🏀 HOUSTON ROCKETS (NBA)</div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;">Toyota Center, Houston · ~40 min from Katy · Kids ages 6 & 10 will love the energy & action</div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. Warriors</h4><p>Fri Mar 6 · 7:30 PM · Toyota Center</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. Trail Blazers</h4><p>Sat Mar 7 · 8:00 PM · Toyota Center</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. Raptors</h4><p>Wed Mar 11 · Toyota Center</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. Pelicans</h4><p>Sat Mar 14 · Toyota Center</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. LA Lakers ⭐</h4><p>Mon Mar 17 · 8:30 PM · Star matchup!</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. LA Lakers ⭐</h4><p>Wed Mar 19 · 8:30 PM · Back-to-back!</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. Atlanta Hawks</h4><p>Sat Mar 21 · Toyota Center</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Rockets vs. Miami Heat</h4><p>Sun Mar 22 · Toyota Center</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="pip"></div>⚽ HOUSTON DYNAMO FC (MLS)</div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;">Shell Energy Stadium, Houston · ~35 min from Katy · Great live atmosphere for kids</div>
+        <div class="game">
+          <div class="game-teams"><h4>Dynamo vs. Portland Timbers</h4><p>Sat Mar 14 · 7:30 PM · Shell Energy</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Dynamo vs. Seattle Sounders</h4><p>Sat Apr 4 · 7:30 PM · Shell Energy</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>Houston Dash Home Opener</h4><p>Sat Mar 21 · 3:00 PM vs. Boston Legacy</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><div class="pip"></div>⚾ SUGAR LAND SPACE COWBOYS (Triple-A)</div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;">Constellation Field, Sugar Land · Only 20 min from Katy! Houston Astros affiliate · BEST family value in town</div>
+
+        <div class="banner" style="margin-bottom:12px;">
+          <h3>🚀 Opening Weekend: March 27–29!</h3>
+          <p>vs. Round Rock Express · Fri night = FIREWORKS · Saturday & Sunday games too. Family Four Packs available. Orion's Kids Club = great deal for the boys!</p>
+        </div>
+
+        <div class="game">
+          <div class="game-teams"><h4>vs. Round Rock Express 🎆</h4><p>Fri Mar 27 · 7:05 PM · Opening Night + Fireworks!</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>vs. Round Rock Express</h4><p>Sat Mar 28 · 7:05 PM</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+        <div class="game">
+          <div class="game-teams"><h4>vs. Round Rock Express</h4><p>Sun Mar 29 · 7:05 PM · Family Four Packs Sunday</p></div>
+          <div class="game-tags"><span class="home-pill">HOME</span></div>
+        </div>
+
+        <div style="margin-top:12px; padding:12px; background:var(--surface2); border-radius:8px; font-size:0.76rem; color:var(--muted); line-height:1.5;">
+          <strong style="color:var(--yellow);">💡 Space Cowboys Family Hacks:</strong><br>
+          • Every <strong style="color:var(--text);">Friday = Fireworks</strong> after the game<br>
+          • Every <strong style="color:var(--text);">Sunday = Family Four Packs</strong> deal<br>
+          • Every <strong style="color:var(--text);">Wednesday = Dollar Hot Dogs</strong><br>
+          • <strong style="color:var(--text);">Orion's Kids Club</strong> membership = tons of perks<br>
+          • <strong style="color:var(--text);">Aug 28–29: Banana Ball</strong> — glow-in-dark baseball! Kids will go nuts.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="pip"></div>🎬 FREE MOVIE NIGHT @ CONSTELLATION FIELD</div>
+        <div class="game">
+          <div class="game-teams">
+            <h4>Center Field Cinema — "Zootopia 2"</h4>
+            <p>Fri Mar 20 · Constellation Field · FREE admission & parking · Big scoreboard screen</p>
+          </div>
+          <div class="game-tags"><span class="tag t-free" style="font-size:0.65rem;padding:3px 8px;">FREE</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ALWAYS-ON PLACES ══════════════ -->
+<div class="panel" id="panel-places">
+  <div class="sec-head">Katy-Area Go-To Spots <div class="line"></div></div>
+
+  <div class="tip">
+    <h4>🎯 Dad Strategy: Always-Free Spots You Can Do Any Weekend</h4>
+    <p>These spots are low/no cost and perfect for active, hands-on kids. Bookmark them all — they're your backup plan when you need something on short notice.</p>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card-title" style="margin-bottom:10px;"><div class="pip"></div>📍 KATY PRIORITY SPOTS</div>
+
+      <div class="place">
+        <h4>🎭 Katy Play Station</h4>
+        <div class="addr">Katy, TX · FREE</div>
+        <div class="desc">Railroad-inspired inclusive play area. Great for active play — both boys can run wild here. Free admission always.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-active">Active</span><span class="tag t-katy">Katy</span></div>
+      </div>
+
+      <div class="place">
+        <h4>🐟 Mary Jo Peckham Park</h4>
+        <div class="addr">Katy · FREE</div>
+        <div class="desc">Stocked fishing pond, walking trails, expandable playground, and FREE putt-putt golf. Bring a rod for the 10-year-old and let the 6-year-old go wild on the playground. Perfect dad day.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-active">Active</span><span class="tag t-katy">Katy</span></div>
+      </div>
+
+      <div class="place">
+        <h4>📚 Katy Branch Library (Harris County)</h4>
+        <div class="addr">5414 Franz Rd, Katy · 281-391-3509 · FREE</div>
+        <div class="desc">Recurring weekly programs for school-age kids: crafts, science, story time, STEAM take-home kits. Family Place Learning Center is great for interactive hands-on activities. Check hcpl.net weekly for schedule.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-science">Science</span><span class="tag t-katy">Katy</span></div>
+      </div>
+
+      <div class="place">
+        <h4>📚 Maud Marks Branch Library</h4>
+        <div class="addr">1815 Westgreen Blvd, Katy · FREE</div>
+        <div class="desc">Harris County Public Library with dedicated Family Place Learning Center. Weekly programs for kids including crafts, reading challenges, and interactive learning. Second library option if Katy Branch is busy.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-science">Learning</span><span class="tag t-katy">Katy</span></div>
+      </div>
+
+      <div class="place">
+        <h4>🛍️ LaCenterra at Cinco Ranch</h4>
+        <div class="addr">Grand Pkwy & Cinco Ranch Blvd, Katy · Free to explore</div>
+        <div class="desc">34-acre outdoor shopping area with open common spaces. Farmers Market every Sunday at 11 AM. Great for a casual stroll, food, and outdoor time. Often has seasonal family events too.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+      </div>
+
+      <div class="place">
+        <h4>🏛️ Historic Downtown Katy</h4>
+        <div class="addr">904 Avenue C, Katy · Usually Free</div>
+        <div class="desc">Katy Market Day every 3rd Saturday (March–Nov), seasonal festivals, the Railroad Museum & caboose. Great for exploring local heritage. Kids like the train history!</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card-title" style="margin-bottom:10px;"><div class="pip"></div>🚗 NEARBY — 20–40 MIN DRIVE</div>
+
+      <div class="place">
+        <h4>⚾ Constellation Field (Space Cowboys)</h4>
+        <div class="addr">One Stadium Dr, Sugar Land · ~20 min from Katy</div>
+        <div class="desc">The closest professional baseball stadium to you. Triple-A Astros affiliate. Cheap tickets, fireworks Fridays, dollar hot dog Wednesdays, and Sunday family packs. Perfect for both boys — action-packed and lots of room to move.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-sports">Sports</span><span class="tag t-active">Active</span></div>
+      </div>
+
+      <div class="place">
+        <h4>🚀 Space Center Houston</h4>
+        <div class="addr">1601 NASA Pkwy, Houston · ~45 min · Paid admission</div>
+        <div class="desc">The ultimate science spot for your crew. Rockets, astronaut training simulators, hands-on STEM exhibits. Your 10-year-old will be mind-blown. Check for free admission days (often for Houston residents).</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-science">Science</span><span class="tag t-active">Hands-On</span></div>
+      </div>
+
+      <div class="place">
+        <h4>🧪 Children's Museum Houston</h4>
+        <div class="addr">1500 Binz St, Houston · FREE Thursdays 5–8 PM</div>
+        <div class="desc">Interactive science exhibits, building zones, water play, coding stations. Perfect for both ages — lots of physical activity AND brain engagement. FREE every Thursday evening. Worth the drive.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free Thu</span><span class="tag t-science">Science</span><span class="tag t-active">Hands-On</span></div>
+      </div>
+
+      <div class="place">
+        <h4>🦕 Houston Museum of Natural Science</h4>
+        <div class="addr">5555 Hermann Park Dr, Houston · Free Thursdays after 3 PM</div>
+        <div class="desc">Massive dinosaur hall, planetarium, gems, Egyptian mummies. Your 6-year-old will lose his mind at the T-Rex. Free on Thursday afternoons — combine with the Children's Museum for an epic day.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free Thu</span><span class="tag t-science">Science</span></div>
+      </div>
+
+      <div class="place">
+        <h4>⚽ Shell Energy Stadium (Dynamo)</h4>
+        <div class="addr">2200 Texas Ave, Houston · ~35 min</div>
+        <div class="desc">Houston Dynamo FC (MLS) and Houston Dash (NWSL) play here. Great outdoor stadium with loud supporter sections — kids love the vibe. Next home game: March 14 vs. Portland at 7:30 PM.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-sports">Sports</span><span class="tag t-active">Active</span></div>
+      </div>
+
+      <div class="place">
+        <h4>📚 Cinco Ranch Branch Library (Fort Bend)</h4>
+        <div class="addr">2620 Commercial Center Blvd, Katy · Reopened March 9!</div>
+        <div class="desc">Fort Bend County Library branch — back open as of March 9. Kids programs, story time, STEAM activities. Check fortbendcountytx.gov/library for current schedule.</div>
+        <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-katy">Katy Area</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW: ALL LOCAL SPOTS ROW -->
+  <div style="margin-top:24px;">
+    <div class="sec-head" style="font-size:1.1rem;">🌿 Katy Parks — Always Free, Always Open <div class="line"></div></div>
+    <div class="g2">
+      <div>
+        <div class="place">
+          <h4>🎵 Central Green — LaCenterra</h4>
+          <div class="addr">23501 Cinco Ranch Blvd, Katy · willowforkdrainagedistrict.com · FREE</div>
+          <div class="desc">Half-acre outdoor stage and lawn right inside LaCenterra. Free concerts, outdoor yoga (every Wednesday 8–10 AM), Tai Chi every Saturday, live music events throughout spring. Kids can run the open lawn while you catch live entertainment. Bring a blanket and chairs. Free parking at LaCenterra.</div>
+          <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-active">Active</span><span class="tag t-katy">Katy</span></div>
+          <div style="margin-top:8px;font-size:0.72rem;color:var(--muted);">📅 <strong style="color:var(--accent2);">Upcoming:</strong> Apr 4 — Nightbird live music · Apr 18 — Moodafaruka multicultural music · Every Wed: Yoga on the Green</div>
+        </div>
+
+        <div class="place">
+          <h4>🌳 Willow Fork Park</h4>
+          <div class="addr">23440 Cinco Ranch Blvd, Katy · Open daylight hours · FREE</div>
+          <div class="desc">32-acre gem right across from LaCenterra. Paved trails around a scenic lake, disc golf course (great for you and the 10-year-old!), playground, butterfly garden, bird watching, pavilion with grills. Monarch butterfly waystation — certified by Monarch Watch. Bunnies, turtles in the lake, free WiFi, educational nature signs throughout. No large events allowed — it stays peaceful and accessible always.</div>
+          <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-active">Active</span><span class="tag t-science">Nature</span><span class="tag t-katy">Katy</span></div>
+          <div style="margin-top:8px;font-size:0.72rem;color:var(--muted);">💡 <strong style="color:var(--yellow);">Dad tip:</strong> Combine with Central Green — both are on Cinco Ranch Blvd, back to back. Full afternoon, zero dollars.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="place">
+          <h4>🌻 Fulshear — Eagle Landing Park (NEW!)</h4>
+          <div class="addr">4131 Woods Road, Fulshear · ~15 min from Katy · FREE</div>
+          <div class="desc">Brand new $5.2 million park that just opened in November 2025 and was annexed into Fulshear city limits in January 2026. Walking trails, sports fields with public access (HTX Soccer has priority but 2 fields always reserved for public), playground. Phase 1 grand opening of fields is Spring 2026 — this will be a great soccer kick-around spot for the boys! Full park opens Summer 2027.</div>
+          <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-active">Active</span><span class="tag t-katy">Fulshear</span></div>
+          <div style="margin-top:8px;font-size:0.72rem;color:var(--muted);">📅 Follow <strong style="color:var(--accent2);">fulsheartexas.gov</strong> for upcoming events. Fulshear's main annual events: <strong style="color:var(--text);">Fulshear's Folly</strong> (October) and various spring community events.</div>
+        </div>
+
+        <div class="place">
+          <h4>🏙️ Brookshire — Hangar Unity Center</h4>
+          <div class="addr">4010 4th St, Brookshire · ~20 min from Katy · FREE programs</div>
+          <div class="desc">Community center in Brookshire with free ongoing programs. Teen Hang Time Mon/Tue/Thu/Fri 2:30–6 PM (great for your 10-year-old — computer lab, lounge, pool, video games). Hip Hop Hope every 1st & 3rd Thursday with free food, music, and games. Check brookshiretexas.org for current schedule.</div>
+          <div class="tags" style="margin-top:8px;"><span class="tag t-free">Free</span><span class="tag t-katy">Brookshire</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div class="sec-head" style="font-size:1.1rem;">📚 All Your Library Sources <div class="line"></div></div>
+      <div class="g3">
+        <div class="place">
+          <h4>Katy Branch — Harris County</h4>
+          <div class="addr">5414 Franz Rd · hcpl.net/locations/kt</div>
+          <div class="desc">Weekly kids programs, STEAM kits, Family Place Learning Center. Check website weekly for current schedule — it rotates.</div>
+          <div class="tags" style="margin-top:6px;"><span class="tag t-free">Free</span><span class="tag t-science">STEAM</span></div>
+        </div>
+        <div class="place">
+          <h4>Maud Marks Branch — Harris County</h4>
+          <div class="addr">1815 Westgreen Blvd, Katy · hcpl.net</div>
+          <div class="desc">Second Katy library option. Family Place Learning Center, crafts, reading challenges for school-age kids.</div>
+          <div class="tags" style="margin-top:6px;"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+        </div>
+        <div class="place">
+          <h4>Cinco Ranch Branch — Fort Bend</h4>
+          <div class="addr">2620 Commercial Center Blvd · Reopened Mar 9</div>
+          <div class="desc">Fort Bend County Library. Back open now! Kids programs, story time, STEAM. fortbendcountytx.gov/library</div>
+          <div class="tags" style="margin-top:6px;"><span class="tag t-free">Free</span><span class="tag t-katy">Katy</span></div>
+        </div>
+        <div class="place">
+          <h4>Fulshear Branch — Fort Bend</h4>
+          <div class="addr">6350 FM 1093, Fulshear · fortbendcountytx.gov/library</div>
+          <div class="desc">Closest library to Fulshear residents. Good backup when Cinco Ranch is busy. Kids and family programs.</div>
+          <div class="tags" style="margin-top:6px;"><span class="tag t-free">Free</span><span class="tag t-katy">Fulshear</span></div>
+        </div>
+        <div class="place">
+          <h4>George Memorial Library — Fort Bend</h4>
+          <div class="addr">1001 Golfview Dr, Richmond · ~20 min</div>
+          <div class="desc">Fort Bend County's flagship library. Bigger programs, more resources. Worth the drive for special events (hosted the Lunar New Year Festival this month).</div>
+          <div class="tags" style="margin-top:6px;"><span class="tag t-free">Free</span><span class="tag t-science">Events</span></div>
+        </div>
+        <div class="place">
+          <h4>Waller County Library</h4>
+          <div class="addr">Serves Brookshire area · wallercountytx.gov</div>
+          <div class="desc">Serves Waller County residents including Brookshire. Free kids programs and resources. Good option if heading toward Brookshire direction.</div>
+          <div class="tags" style="margin-top:6px;"><span class="tag t-free">Free</span><span class="tag t-katy">Brookshire</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CHECKLIST ══════════════ -->
+<div class="panel" id="panel-checklist">
+  <div class="sec-head">Weekly Dad Checklist <div class="line"></div></div>
+
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Week of March 4 Progress</span><span id="prog-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><div class="pip"></div>PLAN THIS WEEK</div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Register for FREE Spring Campout</div><div class="chk-sub">CityofKaty.com/campout — March 13–14 at VFW Park. Spots are limited, do this TODAY.</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Buy Space Cowboys Opening Weekend Tickets</div><div class="chk-sub">March 27–29 at Constellation Field. milb.com/sugar-land — only 20 min from home!</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Check Katy Branch Library schedule</div><div class="chk-sub">hcpl.net/locations/kt — look at this week's kids programs. Free always.</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Plan a Rockets or Dynamo game this month</div><div class="chk-sub">Rockets vs. Lakers March 17 is the marquee game. Dynamo vs. Portland March 14 is great value.</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Mark Center Field Cinema on calendar</div><div class="chk-sub">March 20 — FREE "Zootopia 2" on giant scoreboard at Constellation Field. Free parking too.</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="pip"></div>DAD LIFE WINS</div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Take the boys somewhere new this week</div><div class="chk-sub">Mary Jo Peckham Park, Katy Market Day, or a Rockets game are easy wins this week.</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">One active outdoor activity this week</div><div class="chk-sub">Fishing at Peckham, a trail walk, free mini golf, or throwing a ball at a park.</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">One science/learning moment this week</div><div class="chk-sub">Library program, Children's Museum Thu night (free), or a YouTube science video night at home.</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Look up next month's big events</div><div class="chk-sub">April has Dynamo vs. Seattle (Apr 4) and more Space Cowboys home games. Plan ahead!</div></div>
+      </div>
+
+      <div class="chk" onclick="toggleCheck(this)">
+        <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div><div class="chk-label">Dad moment: just play with the boys</div><div class="chk-sub">Backyard, driveway, or park. You being present and athletic with them is the biggest win.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="report-card" style="margin-top:20px;">
+    <h3>📋 Monthly Priorities — March</h3>
+    <div class="g2">
+      <div>
+        <div class="chk" onclick="toggleCheck(this)">
+          <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="chk-label">Attend the FREE Overnight Campout (Mar 13–14)</div></div>
+        </div>
+        <div class="chk" onclick="toggleCheck(this)">
+          <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="chk-label">See Space Cowboys Opening Weekend</div></div>
+        </div>
+        <div class="chk" onclick="toggleCheck(this)">
+          <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="chk-label">Visit a library with the boys at least 2x</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="chk" onclick="toggleCheck(this)">
+          <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="chk-label">Hit Mary Jo Peckham Park for free mini golf</div></div>
+        </div>
+        <div class="chk" onclick="toggleCheck(this)">
+          <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="chk-label">Attend FREE Zootopia 2 at Constellation (Mar 20)</div></div>
+        </div>
+        <div class="chk" onclick="toggleCheck(this)">
+          <div class="chk-box"><svg class="checkmark-svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div><div class="chk-label">Take boys to at least 1 pro sports game</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ GOOGLE CALENDAR ══════════════ -->
+<div class="panel" id="panel-cal">
+  <div class="sec-head">Google Calendar Setup <div class="line"></div></div>
+
+  <div class="banner">
+    <h3>📲 Get Everything on Your Phone in 3 Steps</h3>
+    <p>Once you subscribe to these calendars, all events automatically appear in your Google Calendar — including future updates. No manual entry needed.</p>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title"><div class="pip"></div>STEP 1 — SUBSCRIBE TO TEAM CALENDARS</div>
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:14px;line-height:1.5;">In Google Calendar on desktop: click the <strong style="color:var(--text);">"+" next to "Other Calendars"</strong> → "From URL" → paste link below.</p>
+
+        <div class="tip">
+          <h4>🏀 Houston Rockets Schedule</h4>
+          <p>Go to <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.72rem;">nba.com/rockets/schedule</code> → click "Add to Calendar" / "Subscribe" — works directly with Google Calendar.</p>
+        </div>
+        <div class="tip">
+          <h4>⚾ Space Cowboys Schedule</h4>
+          <p>Visit <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.72rem;">milb.com/sugar-land/schedule</code> → look for the calendar export / subscribe button. Or search "Sugar Land Space Cowboys iCal feed".</p>
+        </div>
+        <div class="tip">
+          <h4>⚽ Houston Dynamo FC Schedule</h4>
+          <p>Visit <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.72rem;">houstondynamofc.com/schedule</code> → look for "Add to Calendar" or iCal export on each game.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="pip"></div>STEP 2 — SUBSCRIBE TO LOCAL EVENT FEEDS</div>
+        <div class="tip">
+          <h4>🏛️ City of Katy Events</h4>
+          <p>Visit <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.72rem;">cityofkaty.com/government/city-departments/parks-recreation/events-calendar</code> and look for the calendar subscribe/export option.</p>
+        </div>
+        <div class="tip">
+          <h4>📚 Harris County Public Library (Katy Branch)</h4>
+          <p>Visit <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.72rem;">hcpl.net/locations/kt</code> and subscribe to their events calendar for automatic program updates.</p>
+        </div>
+        <div class="tip">
+          <h4>🎪 My Neighborhood News — Katy Events</h4>
+          <p>Visit <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:0.72rem;">myneighborhoodnews.com/katy-fulshear/community-events</code> for local free event listings to check weekly.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title"><div class="pip"></div>STEP 3 — MANUALLY ADD YOUR ANCHOR EVENTS</div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:12px;line-height:1.5;">Add these directly to Google Calendar right now — they're your can't-miss March dates:</p>
+
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">13</div></div>
+          <div class="ev-info"><h4>FREE Campout — VFW Park, Katy</h4><p>4 PM Fri to 9 AM Sat · Register first at CityofKaty.com/campout</p></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">14</div></div>
+          <div class="ev-info"><h4>Dynamo vs. Portland — Shell Energy</h4><p>7:30 PM · Soccer home game</p></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">17</div></div>
+          <div class="ev-info"><h4>Rockets vs. LA Lakers ⭐</h4><p>8:30 PM · Toyota Center</p></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">20</div></div>
+          <div class="ev-info"><h4>FREE Movie Night — "Zootopia 2"</h4><p>Constellation Field · Free admission & parking</p></div>
+        </div>
+        <div class="ev">
+          <div class="ev-date"><div class="mo">MAR</div><div class="dy">27</div></div>
+          <div class="ev-info"><h4>⚾ Space Cowboys Opening Night! 🎆</h4><p>7:05 PM · Constellation Field · FIREWORKS after game</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="pip"></div>💡 RECURRING REMINDERS TO ADD</div>
+        <div class="tip">
+          <h4>Every Sunday</h4>
+          <p>LaCenterra Farmers Market — 11 AM, Katy</p>
+        </div>
+        <div class="tip">
+          <h4>3rd Saturday (Mar–Nov)</h4>
+          <p>Katy Market Day — Downtown Historic Katy · Free vendors, food, music</p>
+        </div>
+        <div class="tip">
+          <h4>Every Thursday</h4>
+          <p>Children's Museum Houston — FREE 5–8 PM (worth the drive when you need science!)</p>
+        </div>
+        <div class="tip">
+          <h4>Every Friday Night (Space Cowboys Home Games)</h4>
+          <p>Constellation Field Fireworks after every Friday home game — season runs Mar 27 through Sept 20</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ GET UPDATES ══════════════ -->
+<div class="panel" id="panel-receive">
+  <div class="sec-head">How to Get Updates 📬 <div class="line"></div></div>
+
+  <div class="banner">
+    <h3>📱 The Honest Answer: 3 Ways to Stay Current</h3>
+    <p>This dashboard is a saved file — it doesn't auto-update on its own. Here's how to keep it fresh with zero stress.</p>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title"><div class="pip"></div>OPTION 1 — WEEKLY CHECK-IN WITH CLAUDE ⭐ RECOMMENDED</div>
+        <div class="tip">
+          <h4>How it works</h4>
+          <p>Every Monday (or whenever you want), open Claude at <strong>claude.ai</strong> and paste this message:</p>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:0.78rem;color:var(--accent2);font-family:monospace;line-height:1.7;margin-bottom:12px;">
+          "Hey — I'm the Katy TX single dad with two boys (ages 6 & 10). Give me this week's Dad HQ update: free/cheap events in Katy, Fulshear, Brookshire area, Space Cowboys games, Rockets & Dynamo home games, Central Green events, library programs, and anything at Willow Fork Park. Format it like last time."
+        </div>
+        <div class="tip">
+          <h4>What you get</h4>
+          <p>A fresh updated dashboard file in about 2 minutes. Claude searches live sources for current events every time. This is your personal secretary doing its job.</p>
+        </div>
+        <div class="tip">
+          <h4>Monthly version too</h4>
+          <p>First of each month say: <em>"Give me my monthly Dad HQ for [month] — big events, sports schedule, anything to plan ahead for."</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title"><div class="pip"></div>OPTION 2 — SUBSCRIBE TO GOOGLE CALENDARS (Auto-updates forever)</div>
+        <div class="tip">
+          <h4>These update automatically on your phone</h4>
+          <p>Subscribe once, they show up in your calendar forever without any effort from you.</p>
+        </div>
+        <div class="ev" style="padding:8px 0;border-bottom:1px solid var(--border);">
+          <div class="ev-info"><h4>City of Katy Events</h4><p>cityofkaty.com/government/city-departments/parks-recreation/events-calendar → look for "Subscribe" or iCal</p></div>
+        </div>
+        <div class="ev" style="padding:8px 0;border-bottom:1px solid var(--border);">
+          <div class="ev-info"><h4>Central Green Park Events</h4><p>centralgreenpark.com/events → follow their Facebook page too for instant updates</p></div>
+        </div>
+        <div class="ev" style="padding:8px 0;border-bottom:1px solid var(--border);">
+          <div class="ev-info"><h4>Houston Rockets Schedule</h4><p>nba.com/rockets/schedule → click "Add to Calendar"</p></div>
+        </div>
+        <div class="ev" style="padding:8px 0;border-bottom:1px solid var(--border);">
+          <div class="ev-info"><h4>Space Cowboys Schedule</h4><p>milb.com/sugar-land/schedule → look for calendar subscribe/export button</p></div>
+        </div>
+        <div class="ev" style="padding:8px 0;border-bottom:1px solid var(--border);">
+          <div class="ev-info"><h4>Houston Dynamo FC</h4><p>houstondynamofc.com/schedule → "Add to Calendar" on each game or look for iCal export</p></div>
+        </div>
+        <div class="ev" style="padding:8px 0;">
+          <div class="ev-info"><h4>Harris County Library (Katy Branch)</h4><p>hcpl.net/locations/kt → events tab → subscribe or check weekly</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="pip"></div>OPTION 3 — BOOKMARK THESE PAGES, CHECK WEEKLY</div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:12px;">Spend 5 min on Sundays scanning these — your whole week planned in one pass:</p>
+        <div class="tip"><h4>katy.com/events</h4><p>Best single source for all Katy events — updated constantly, searchable by category.</p></div>
+        <div class="tip"><h4>centralgreenpark.com/events</h4><p>All upcoming Central Green events — concerts, yoga, family activities.</p></div>
+        <div class="tip"><h4>fulsheartexas.gov (Special Events page)</h4><p>City of Fulshear official events. Follow their Facebook too for quicker updates.</p></div>
+        <div class="tip"><h4>hcpl.net (Katy Branch)</h4><p>Harris County library programs — rotates weekly so worth a quick scan.</p></div>
+        <div class="tip"><h4>Friends of Willow Fork Park (Facebook)</h4><p>Free family nature programs organized by residents — not on city websites.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal-box" style="margin-top:8px;">
+    <h3>🔮 What's Coming for Claude</h3>
+    <p>Anthropic is actively building toward scheduled reports and email delivery for Claude. When that launches, this whole dashboard could be emailed to you automatically every Monday morning. For now, the weekly check-in approach is your best bet — it takes you 10 seconds to ask, and about 2 minutes for Claude to pull fresh data and build your update. You've got a pretty good secretary already. 😄</p>
+  </div>
+</div>
+
+</main>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.chk');
+    const done = document.querySelectorAll('.chk.done');
+    const pct = Math.round((done.length / all.length) * 100);
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-pct').textContent = pct + '%';
+  }
+
+  // Build March calendar
+  const events = {
+    1:  [{type:'free',label:'Farmers Mkt'}],
+    4:  [{type:'free',label:'Farmers Mkt'}],
+    6:  [{type:'sports',label:'Rockets🏀'}],
+    7:  [{type:'sports',label:'Rockets🏀'},{type:'free',label:'Lunar Fest'}],
+    8:  [{type:'free',label:'Peckham Park'}],
+    9:  [{type:'sports',label:'Dynamo⚽'},{type:'katy',label:'Market Day'}],
+    11: [{type:'sports',label:'Rockets🏀'}],
+    13: [{type:'katy',label:'Campout🏕️'}],
+    14: [{type:'katy',label:'Campout'},{type:'sports',label:'Dynamo⚽'}],
+    15: [{type:'free',label:'Farmers Mkt'}],
+    17: [{type:'sports',label:'Rockets🏀'}],
+    19: [{type:'sports',label:'Rockets🏀'}],
+    20: [{type:'free',label:'Free Movie🎬'}],
+    21: [{type:'sports',label:'Dash⚽'},{type:'sports',label:'Rockets🏀'}],
+    22: [{type:'sports',label:'Rockets🏀'},{type:'free',label:'Farmers Mkt'}],
+    27: [{type:'sports',label:'SpaceCowboys⚾🎆'}],
+    28: [{type:'sports',label:'SpaceCowboys⚾'}],
+    29: [{type:'sports',label:'SpaceCowboys⚾'},{type:'free',label:'Farmers Mkt'}],
+  };
+
+  const grid = document.getElementById('cal-grid');
+  const startDay = 0; // March 1, 2026 = Sunday
+  const daysInMonth = 31;
+  const today = 4;
+
+  // Add empty cells before day 1
+  for (let i = 0; i < startDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'day-cell empty';
+    grid.appendChild(empty);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    const hasEvt = events[d] && events[d].length > 0;
+    cell.className = 'day-cell' + (hasEvt ? ' has-event' : '') + (d === today ? ' today' : '');
+    let inner = `<div class="day-num">${d}</div>`;
+    if (hasEvt) {
+      events[d].forEach(ev => {
+        inner += `<div class="dot-event de-${ev.type}" title="${ev.label}"></div>`;
+      });
+    }
+    cell.innerHTML = inner;
+    grid.appendChild(cell);
+  }
+</script>
+</body>
+</html>
